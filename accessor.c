@@ -70,7 +70,8 @@ int main() {
   const void * buffer = "hello world\n";
 
   // why does this return -1?
-  unsigned int val = write(a, buffer, 12);
+  unsigned int count = 12;
+  int val = write(a, buffer, count);
   printf("Returned: %d\n" , val);
 
 
