@@ -23,6 +23,8 @@ int main() {
   int d = open("hello.txt", 0);
   printf ("opened file hello.txt:  %d\n", d);
 
+  printf("\n");
+
   /***
   // fd = what table entry is the file in?
   // buf = memory location to read data from
@@ -34,27 +36,22 @@ int main() {
   ***/
 
   printf("a = test.txt...\n");
-  printf("Reading 'blueberry banana shake'\n");
+  printf("Should read 'blueberry banana shake'\n");
   // Need to test: When does it return 0? ( when reaches end of file)
   // How to see what characters are read?
-  char x;
+  char * x = malloc(sizeof(char) * 100); //can store 100 characters
 
-  int ab = read(a, &x , 4);
-  printf("Read(%d, &x, 4) reads %d bytes. \n", a, ab);
+  int ab = read(a, x , 22);
+  printf("Read(%d, x, 22) reads %d bytes. \n", a, ab);
   //printf("The character(s) read: ");
-  //printf("x = %c\n", x );
-  // ^ only gives the first character
+  printf("x = %s\n", x);
 
-  // problem trying to read from closed files
-  char y;
-  //int ac = read(c, &y , 35);
-  //printf("Read(%d, &y, 35) reads %d bytes. \n", c, ac);
-  //printf("The character(s) read: ");
-  //printf("y = %c\n", y );
+  char * y = malloc(sizeof(char) * 10);
 
-  int ad = read(a, &y , 10);
-  printf("Read(%d, &y, 10) reads %d bytes. \n", a, ad);
-  printf("File is ");
+  int ad = read(a, y , 10);
+  printf("Read(%d, y, 10) reads %d bytes. \n", a, ad);
+  //printf("File is ");
+  printf("\n");
 
 
   /***
@@ -70,14 +67,21 @@ int main() {
   printf("a = test.txt...\n");
   printf("Writing 'hello world' into test.txt \n");
 
-  // why does this return -1?
-  int xx = write(a, "hello world\n", strlen("hello world\n"));
-  printf("%d\n" , xx);
-  printf("write(%d, 'hello world\\n', %d). Returned %d.\n", a, strlen("hello world\n"), xx) ;
+  const void * buffer = "hello world\n";
 
-  int zz = read(a, &x , 10);
-  printf("Read(%d, &x, 10) reads %d bytes. \n", a, zz);
-  printf("x = %c\n", x );
+  // why does this return -1?
+  unsigned int val = write(a, buffer, 12);
+  printf("Returned: %d\n" , val);
+
+
+  printf("write(%d, 'hello world\\n', 12)\nReturned: %d\n",
+  				a,  								val) ;
+
+  int zz = read(a, x , 10);
+  printf("Read(%d, x, 10) reads %d bytes. \n", a, zz);
+  printf("x = %s\n", x );
+
+  printf("\n");
 
   close(a);
   printf("closed test.txt\n");
