@@ -1,17 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-//for open
-#include <fcntl.h>
-//for read
-#include <unistd.h>
+#include <fcntl.h> //for open
+#include <unistd.h> //for read
 
 
 int main() {
+  printf("\n========================================================\n");
 
   printf("File test.txt contains the string 'blueberry banana shake'\n");
   // opens file for reading, writing, or both
-  int a = open("test.txt", 0);
+  int a = open("test.txt", 2);
   printf ("opened file test.txt:  %d\n", a);
 
   int b = open("test.txt", 0);
@@ -21,9 +20,7 @@ int main() {
   printf ("closed file test.txt:  %d\n", c);
 
   int d = open("hello.txt", 0);
-  printf ("opened file hello.txt:  %d\n", d);
-
-  printf("\n");
+  printf ("created file hello.txt:  %d\n", d);
 
   /***
   // fd = what table entry is the file in?
@@ -35,24 +32,25 @@ int main() {
   // Returns: actual bytes read
   ***/
 
-  printf("a = test.txt...\n");
-  printf("Should read 'blueberry banana shake'\n");
-  // Need to test: When does it return 0? ( when reaches end of file)
-  // How to see what characters are read?
-  char * x = malloc(sizeof(char) * 100); //can store 100 characters
+  printf("\nFile is a = test.txt...\n");
+  printf("Reading 'blueberry banana shake'\n");
 
-  int ab = read(a, x , 22);
-  printf("Read(%d, x, 22) reads %d bytes. \n", a, ab);
+  char x;
+
+  int ab = read(a, &x , 4);
+  printf("Read(%d, &x, 4) reads %d bytes. \n", a, ab);
   //printf("The character(s) read: ");
-  printf("x = %s\n", x);
+  //printf("x = %c\n", x );
 
-  char * y = malloc(sizeof(char) * 10);
 
-  int ad = read(a, y , 10);
-  printf("Read(%d, y, 10) reads %d bytes. \n", a, ad);
-  //printf("File is ");
-  printf("\n");
+  char y;
+  //int ac = read(c, &y , 35);
+  //printf("Read(%d, &y, 35) reads %d bytes. \n", c, ac);
+  //printf("The character(s) read: ");
+  //printf("y = %c\n", y );
 
+  int ad = read(a, &y , 10);
+  printf("read(%d, &y, 10) reads %d bytes. \n\n", a, ad);
 
   /***
   // fd = what table entry is the file in?
@@ -64,28 +62,23 @@ int main() {
   // Returns: actual bytes read
   ***/
 
-  printf("a = test.txt...\n");
+  printf("File is a = test.txt...\n");
   printf("Writing 'hello world' into test.txt \n");
 
-  const void * buffer = "hello world\n";
+  int xx = write(a, "hello world\n", 0);
+  //printf("%d\n" , strlen("hello world\n"));
+  printf("write(%d, 'hello world\\n', %d). Returned %d.\n", a, strlen("hello world\n"), xx) ;
 
-  // why does this return -1?
-  unsigned int count = 12;
-  int val = write(a, buffer, count);
-  printf("Returned: %d\n" , val);
+  int zz = read(a, &x , 10);
+  printf("Read(%d, &x, 10) reads %d bytes. \n", a, zz);
+  printf("Read entire file. \n");
+  printf("x = %c\n", x );
 
-
-  printf("write(%d, 'hello world\\n', 12)\nReturned: %d\n",
-  				a,  								val) ;
-
-  int zz = read(a, x , 10);
-  printf("Read(%d, x, 10) reads %d bytes. \n", a, zz);
-  printf("x = %s\n", x );
-
-  printf("\n");
 
   close(a);
-  printf("closed test.txt\n");
+  printf("closed test.txt");
+  printf("\n========================================================\n");
+
   return 0;
 
 }
